@@ -1,0 +1,36 @@
+Mainnet ID  = 2107
+Testnet ID  = 585858
+
+-   Install go version go1.18.1 linux/amd64
+-   Run make all
+-   Create validator address
+    ./build/bin/geth account new
+
+-  ✅ Create Manager address
+    ./build/bin/geth account new
+
+-   ✅ Masukkan list address manager dan validator di chain\params\config.go
+
+-  ✅ generate genesis.json dengan ./build/bin/puppeth dan tambahkan address berikut
+    - masukkan contract creation code untuk system contract
+      - 0x000000000000000000000000000000000000f000
+      - 0x000000000000000000000000000000000000f111
+      - 0x000000000000000000000000000000000000f222  
+    - masukkan contract creation code untuk masing masing managers
+- ✅  masukkan dari genesis json yang dihasilkan ke chain\core\genesis.go, nilai yang dimasukkan
+    - Timestamp
+    - ExtraData
+-   ✅ Jalankan  go run core/mkalloc.go tools/evozcore.json di direktori  chain\core
+-   ✅ masukkan ke core\genesis_alloc.go
+-   ✅ generate masing masing nodekey untuk validator dengan perintah ./build/bin/bootnode --genkey=nodekey
+-   ✅ ambil nilai enode masing masing dengan ./build/bin/bootnode --nodekey=nodekey --writeaddress
+-   ✅ masukkan ke chain\params\bootnodes.go
+-   ✅ build ulang geth dengan perintah make all
+-    ✅ Running init genesis untuk contract creation dengan perintah ./build/bin/geth init  tools/evozcore.json
+-    ✅ jalankan geth dengan perintah ./build/bin/geth console
+-    ✅ ambil genesis/hash dengan perintah eth.getBlock(0)
+-    ✅ masukkan genesis hash di file chain\params\config.go
+-   build ulang geth dengan perintah make all
+-   jalankan geth
+
+0xc676958027a96b10b7803bc66c6446a2d57e61b35641e8758397ddea010e8845

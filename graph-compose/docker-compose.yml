@@ -1,0 +1,67 @@
+version: '3.6'
+
+services:
+  node:
+    image: peta:0.0.1
+    container_name: node
+    ports:
+      - "8545:8545"
+      - "8546:8546"
+    volumes:
+      - node_data:/root/.ethereum
+
+  ipfs-node:
+    image: ipfs/go-ipfs:latest
+    container_name: ipfs-node
+    restart: always
+    ports:
+      - 5001:5001
+      - 4001:4001
+    volumes:
+      - ipfs-data:/data/ipfs
+
+  database:
+    image: postgres:14
+    container_name: database
+    ports:
+      - '5432:5432'
+    command:
+      [
+        "postgres",
+        "-cshared_preload_libraries=pg_stat_statements",
+        "-cmax_connections=200"
+      ]
+    environment:
+      POSTGRES_USER: graph-user
+      POSTGRES_PASSWORD: DreamComeTrue
+      POSTGRES_DB: graph-node
+      PGDATA: "/var/lib/postgresql/data"
+      POSTGRES_INITDB_ARGS: "-E UTF8 --locale=C"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+
+  graph-node:
+    image: graphprotocol/graph-node
+    container_name: graph-node
+    ports:
+      - '8000:8000'
+      - '8001:8001'
+      - '8020:8020'
+      - '8030:8030'
+      - '8040:8040'
+    depends_on:
+      - ipfs-node
+      - database
+    environment:
+      postgres_host: database
+      postgres_user: graph-user
+      postgres_pass: DreamComeTrue
+      postgres_db: graph-node
+      ipfs: 'ipfs-node:5001'
+      ethereum: 'peta:http://node:8545'
+      GRAPH_LOG: info
+
+volumes:
+  node_data:
+  ipfs-data:
+  postgres-data:
