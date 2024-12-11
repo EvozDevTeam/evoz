@@ -75,7 +75,11 @@ var Defaults = Config{
 		DatasetsOnDisk:   2,
 		DatasetsLockMmap: false,
 	},
+<<<<<<< HEAD
 	NetworkId:               1323,
+=======
+	NetworkId:               805,
+>>>>>>> change ChainID
 	TxLookupLimit:           2350000,
 	LightPeers:              100,
 	UltraLightFraction:      75,
